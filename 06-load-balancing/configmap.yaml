@@ -1,0 +1,28 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-product-data
+  namespace: demo-product
+data:
+  db.json: |
+    {
+      "meta": {
+        "version": "v1.0",
+        "release": "the original version"
+      }
+    }
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-product-dev-data
+  namespace: demo-product
+data:
+  db.json: |
+    {
+      "meta": {
+        "version": "v2.0",
+        "release": "the new version"
+      }
+    }

@@ -1,0 +1,31 @@
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: mw-ipwhitelist-workstation
+  namespace: demo-product-dev
+spec:
+  ipWhiteList:
+    sourceRange:
+      - 127.0.0.1/32
+      - 192.168.240.82
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: demo-dev-ingress
+  namespace: demo-product-dev
+spec:
+  routes:
+    - kind: Rule
+      match: Host(`product.nomadrail.com`) && PathPrefix(`/v2/`)
+      middlewares:
+        - name: demo-stripprefix
+          namespace: demo-product-dev
+        - name: mw-ipwhitelist-workstation
+          namespace: demo-product-dev
+      services:
+        - kind: Service
+          name: demo-api-svc
+          namespace: demo-product-dev
+          port: 80

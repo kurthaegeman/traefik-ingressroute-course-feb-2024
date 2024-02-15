@@ -1,0 +1,14 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: TraefikService
+metadata:
+  name: weighted-load-balancing
+  namespace: demo-product
+spec:
+  weighted:
+    services:
+      - name: svc-demo-api
+        port: 80
+        weight: 80
+      - name: svc-demo-api-dev
+        port: 80
+        weight: 20

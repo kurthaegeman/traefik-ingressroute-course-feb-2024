@@ -1,0 +1,14 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: demo-product-ingress
+  namespace: demo-product
+spec:
+  routes:
+    - kind: Rule
+      match: Host(`product.nomadrail.com`)
+      services:
+        - name: weighted-load-balancing
+          namespace: demo-product
+          kind: TraefikService

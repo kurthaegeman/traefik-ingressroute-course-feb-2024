@@ -1,0 +1,82 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-product-api
+  namespace: demo-product
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-api
+  template:
+    metadata:
+      labels:
+        app: demo-api
+    spec:
+      containers:
+        - name: demo-dev-api
+          image: docker-registry-01.nomadrail.com/docker-hub-proxy-cache/clue/json-server:latest
+          ports:
+            - containerPort: 80
+          securityContext:
+            readOnlyRootFilesystem: true
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi
+          volumeMounts:
+            - name: config
+              mountPath: "/data"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: demo-product-data
+            items:
+              - key: "db.json"
+                path: "db.json"
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-product-api-dev
+  namespace: demo-product-dev
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: demo-api
+  template:
+    metadata:
+      labels:
+        app: demo-api
+    spec:
+      containers:
+        - name: demo-api
+          image: docker-registry-01.nomadrail.com/docker-hub-proxy-cache/clue/json-server:latest
+          ports:
+            - containerPort: 80
+          securityContext:
+            readOnlyRootFilesystem: true
+          resources:
+            limits:
+              cpu: 250m
+              memory: 256Mi
+            requests:
+              cpu: 250m
+              memory: 128Mi
+          volumeMounts:
+            - name: config
+              mountPath: "/data"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: demo-product-dev-data
+            items:
+              - key: "db.json"
+                path: "db.json"

@@ -1,0 +1,36 @@
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: demo-product-ingress
+  namespace: demo-product
+spec:
+  routes:
+    - kind: Rule
+      match: Host(`product.nomadrail.com`) && PathPrefix(`/v1/`)
+      middlewares:
+        - name: demo-stripprefix
+          namespace: demo-product
+      services:
+        - kind: Service
+          name: svc-demo-api
+          namespace: demo-product
+          port: 80
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: demo-dev-ingress
+  namespace: demo-product-dev
+spec:
+  routes:
+    - kind: Rule
+      match: Host(`product.nomadrail.com`) && PathPrefix(`/v2/`)
+      middlewares:
+        - name: demo-stripprefix
+          namespace: demo-product-dev
+      services:
+        - kind: Service
+          name: svc-demo-api
+          namespace: demo-product-dev
+          port: 80
