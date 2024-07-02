@@ -1,9 +1,11 @@
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: demo-product-ingress
   namespace: demo-product
+  labels:
+    demo: word
 spec:
   routes:
     - kind: Rule
@@ -14,11 +16,13 @@ spec:
           namespace: demo-product
           port: 80
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: demo-dev-ingress
   namespace: demo-product-dev
+  labels:
+    demo: word
 spec:
   routes:
     - kind: Rule

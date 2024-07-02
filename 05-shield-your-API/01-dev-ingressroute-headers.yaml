@@ -1,13 +1,15 @@
 ---
-apiVersion: traefik.containo.us/v1alpha1
+apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: demo-dev-ingress
   namespace: demo-product-dev
+  labels:
+    demo: word
 spec:
   routes:
     - kind: Rule
-      match: Host(`product.nomadrail.com`) && PathPrefix(`/v2/`) && Headers(`can-I-haz-access`, `true`)
+      match: Host(`product.nomadrail.com`) && PathPrefix(`/v2/`) && Header(`can-I-haz-access`, `true`)
       middlewares:
         - name: demo-stripprefix
           namespace: demo-product-dev

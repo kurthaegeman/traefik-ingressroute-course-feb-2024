@@ -20,6 +20,8 @@ spec:
           ports:
             - containerPort: 80
           securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
             readOnlyRootFilesystem: true
           resources:
             limits:
@@ -61,6 +63,8 @@ spec:
           ports:
             - containerPort: 80
           securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
             readOnlyRootFilesystem: true
           resources:
             limits:
